@@ -25,16 +25,30 @@ import json
 import datetime 
 import threading
 import time
+import sys
 
+#Variable env
+#name Bot
+nameBot = "" 
+#token TG
+tokenTelegram = ""
+#minutes pre alert messages
+minutesInterval = ""
+
+if sys.argv[1]:
+    nameBot = sys.argv[1]
+
+if sys.argv[2]:
+    tokenTelegram = sys.argv[2]
+
+if sys.argv[3]:
+    minutesInterval = sys.argv[3]
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
 logger = logging.getLogger(__name__)
-
-#name channel or group telegram
-nameBot = "@notiserver" 
 
 def query():
     client = GraphQLClient('https://api-starsconf.synaptic.cl/graphql.?')
@@ -63,15 +77,13 @@ def query():
 
 
 def main():
-    updater = Updater("424006116:AAF6Z7jSyzjWWLas-qcR8OXBz4EZjs3JA9k")
+    updater = Updater(tokenTelegram)
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
 
     # on different commands - answer in Telegram
     dp.add_handler(CommandHandler("start", start))
-
-
 
     # Start the Bot
     updater.start_polling()
@@ -107,7 +119,7 @@ def start(bot, update):
                 now = datetime.datetime.now()
                 dateNow = now.strftime("%Y-%m-%d")
                 hourNow = now.strftime("%H:%M:%S")
-                now_plus_10 = now + datetime.timedelta(minutes = 10) #sum 10 minutes
+                now_plus_10 = now + datetime.timedelta(minutes = int(minutesInterval)) #sum 10 minutes
 
                 
                 if "2017-11-04" in val["timeSlot"]["date"]: #if date now 

@@ -9,8 +9,8 @@ Simple bot que envía mensajes a grupos o canales dentro de Telegram usando como
     1. [Install Pip](#install-pip)
     1. [Install Virtualenv](#install-virtualenv)
         1. [Install package Virtualenv](#install-package-virtualenv)
-    1. [Run Bot](#run-bot)    
-2. [Basico Usage](#basic-usage)
+
+2. [Run Bot](#run-bot)
 
 
 ## Install
@@ -67,6 +67,7 @@ Para desactivar (No necesario)
 ```bash
 $ deactivate
 ```
+
 #### Install package Virtualenv
 ```bash
 $ pip install -r requirements.txt
@@ -74,8 +75,12 @@ $ pip install -r requirements.txt
 
 ### Run bot
 ```bash
-$ python bot.py
+$ python bot.py [@nombrechannel] [token Telegram] [Minutos de pre alerta de mensajes]
+Ejemplo
+$ python bot.py @notiserver 424006116:AAF6Z7jSyzjWWLas-qcR8OXBz4EZjs3JA9k 10
 ```
+
+
 
 
 
