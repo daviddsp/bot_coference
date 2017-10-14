@@ -4,13 +4,14 @@ Simple bot que envía mensajes a grupos o canales dentro de Telegram usando como
 
 ## Content
 
-1. [Instación](#install)
-    1. [Clone Repo] ($clone-repo)
-    1. [Instalación pip] ($install-pip)
-2. [Basico Uso](#basic-usage)
+1. [Install](#install)
+    1. [Clone Repo] (#clone-repo)
+    1. [Install Pip] (#install-pip)
+    1. [Install Virtualenv] (#install-virtualenv)
+2. [Basico Usage](#basic-usage)
 
 
-## Instación
+## Install
 
 ### Clone Repo
 
@@ -18,9 +19,9 @@ Simple bot que envía mensajes a grupos o canales dentro de Telegram usando como
 $ git clone https://github.com/daviddsp/bot_coference
 ```
 
-### Instalación pip
+### Install Pip
 
-En caso de usar sistema operativo como Debian/Ubuntu seguir los siguientes pasos:
+En caso de usar sistema operativo como Debian/Ubuntu o macOS seguir los siguientes pasos:
 
 ```bash
 $ apt-get update
@@ -37,6 +38,13 @@ Verificación de la versión
 ```bash
 $ pip -V
 ```
+
+En caso de utilizar Windows seguir el siguiente [tutorial](https://github.com/BurntSushi/nfldb/wiki/Python-&-pip-Windows-installation)
+
+
+### Install Virtualenv
+
+
 
 
 
