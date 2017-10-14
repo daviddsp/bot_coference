@@ -120,9 +120,8 @@ def start(bot, update):
                 dateNow = now.strftime("%Y-%m-%d")
                 hourNow = now.strftime("%H:%M:%S")
                 now_plus_10 = now + datetime.timedelta(minutes = int(minutesInterval)) #sum 10 minutes
-
                 
-                if "2017-11-04" in val["timeSlot"]["date"]: #if date now 
+                if dateNow in val["timeSlot"]["date"]: #if date now 
                     if hourNow in val["timeSlot"]["start"]:
                         bot.send_message(nameBot, 
                         text="*La Charla actual es : *"+ val["name"] + "\n"

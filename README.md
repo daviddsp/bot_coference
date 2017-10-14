@@ -74,11 +74,27 @@ $ pip install -r requirements.txt
 ```
 
 ### Run bot
+Para activar el bot necesitamos enviarle 3 parametros los cuales se describen a continuación:
 ```bash
 $ python bot.py [@nombrechannel] [token Telegram] [Minutos de pre alerta de mensajes]
-Ejemplo
+Ejemplo:
 $ python bot.py @notiserver 424006116:AAF6Z7jSyzjWWLas-qcR8OXBz4EZjs3JA9k 10
 ```
+Para correr nuestro bot debemos agregarlo a un grupo o canal, de esta forma el bot tendra acceso como un invitado mas de nuestro chat, el script se encargará de enviar de forma masiva los mensajes para nuestro canal o grupo dependiendo de las horas de las conferencias que vienen desde el servicio de Graphql.
+
+En los links de interes dejo como crear un canal y como asociarle un bot como es nuestro caso, la diferencia entre un canal o grupo es que el canal será publico o prívado y tiene información de cuantas personas han leido del mensaje.
+
+Para agregar el bot a nuestro channel debes ir a la sección de Añadir mienbro como administrador y buscar nuestro bot para este ejemplo nuestro bot se llama @talks_bot, seleccionamos el bot y Telegram preguntará si quieres añadir el bot al canal, aceptas agregar el bot como un miembro del grupo y con esto tendremos nuestro bot listo para envíar mensajes a este canal.
+
+### Start bot to Telegram
+Para arrancar nuestro bot debes ir a la conversación con el bot y colocar el siguiente comando */start* el cual tiene toda la lógica que necesitaremos para manejar nuestro bot, con esto automaticamente el bot consultará de forma recurrente y antes de los 10 minutos que inicie la próxima charla el notificará sobre la nueva charla que se acerca, además posee un módulo para avisar cual es la charla que se esta realizando.
+
+### Links of interest
+
+*[Bots Telegram api](https://core.telegram.org/bots)
+*[Bot father](https://telegram.me/botfather)
+*[Create bot in python](https://github.com/python-telegram-bot/python-telegram-bot)
+*[Create channel in Telegram](https://blog.kuku.io/document/how-to-create-a-channel-on-telegram/)
 
 
 
