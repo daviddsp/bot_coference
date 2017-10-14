@@ -5,9 +5,9 @@ Simple bot que envía mensajes a grupos o canales dentro de Telegram usando como
 ## Content
 
 1. [Install](#install)
-    1. [Clone Repo] (#clone-repo)
-    1. [Install Pip] (#install-pip)
-    1. [Install Virtualenv] (#install-virtualenv)
+    1. [Clone Repo](#clone-repo)
+    1. [Install Pip](#install-pip)
+    1. [Install Virtualenv](#install-virtualenv)
 2. [Basico Usage](#basic-usage)
 
 
