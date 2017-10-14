@@ -84,7 +84,6 @@ def main():
     test(bot, update)
 
 def start(bot, update):
-    
     q_conference = query()
     item_dict = json.loads(q_conference)
 
