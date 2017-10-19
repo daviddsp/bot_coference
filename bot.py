@@ -22,24 +22,24 @@ from time import gmtime, strftime
 
 import logging
 import json
-import datetime 
+import datetime
 import threading
 import time
 import sys
 
 #Variable env
 #name Bot
-nameBot = "" 
+nameBot = ""
 #token TG
 tokenTelegram = ""
 #minutes pre alert messages
 minutesInterval = ""
 
 if sys.argv[1]:
-    nameBot = sys.argv[1]
+    nameBot = "@notiserver"
 
 if sys.argv[2]:
-    tokenTelegram = sys.argv[2]
+    tokenTelegram = "468538287:AAH8f6VT5CGov64tcbHvh5WGJFJQcVPnlIY"
 
 if sys.argv[3]:
     minutesInterval = sys.argv[3]
@@ -61,7 +61,7 @@ def query():
                 date
                 start
                 end
-    
+
             }
             speaker {
                 name
@@ -69,10 +69,62 @@ def query():
             room
             category
             isPlaceholder
-        } 
+        }
 	}
 	''')
     return result.encode("utf-8")
+
+def start(bot, update):
+    print "entro"
+    q_conference = query()
+    item_dict = json.loads(q_conference)
+
+    while True:
+        for val in item_dict["data"]["allTalks"]:
+
+            #Validate placeholder is true
+            if val["isPlaceholder"] == True:
+
+                #Validate speaker null
+                if not (val["speaker"] is not None):
+                    val["speaker"] = {u'name': u'No se especifica'}
+
+                #Validate category null
+                if (val["category"] == ""):
+                    val["category"] = 'No se especifica'
+                #Validate room A_ to A
+                if val["room"] == "A_":
+                    val["room"] = "A"
+
+                now = datetime.datetime.now()
+                dateNow = now.strftime("%Y-%m-%d")
+                hourNow = now.strftime("%H:%M:%S")
+                now_plus_10 = now + datetime.timedelta(minutes = int(minutesInterval)) #sum 10 minutes
+                print now_plus_10
+
+                if dateNow in val["timeSlot"]["date"]: #if date now
+                    if now_plus_10.strftime("%H:%M:%S") in val["timeSlot"]["start"]:
+                        bot.send_message(update.message.nameBot,
+                        text="*La proxima charla es: *"+ val["name"] + "\n"
+                        "*Category: *"+ val["category"] + "\n"
+                        "*Speakers: *"+ val["speaker"]["name"] + "\n"
+                        "*Fecha: *"+ val["timeSlot"]["date"] + "\n"
+                        "*Hora: *"+ val["timeSlot"]["start"] + "* hasta *" + val["timeSlot"]["end"] + "\n"
+                        "*Sala: *"+ val["room"]+ "\n",
+                        parse_mode="MARKDOWN")
+
+                if hourNow in val["timeSlot"]["start"]: #if exist hours + 10 min is true conference
+                    print "enviado"
+                    bot.send_message(update.message.nameBot,
+                    text="*La Charla actual es : *"+ val["name"] + "\n"
+                    "*Category: *"+ val["category"] + "\n"
+                    "*Speakers: *"+ val["speaker"]["name"] + "\n"
+                    "*Fecha: *"+ val["timeSlot"]["date"] + "\n"
+                    "*Hora fin: *"+ val["timeSlot"]["end"] + "\n"
+                    "*Sala: *"+ val["room"]+ "\n",
+                    parse_mode="MARKDOWN")
+        time.sleep(2)
+
 
 
 
@@ -93,56 +145,7 @@ def main():
     # non-blocking and will stop the bot gracefully.
     updater.idle()
 
-    test(bot, update)
-
-def start(bot, update):
-    q_conference = query()
-    item_dict = json.loads(q_conference)
-
-    while True:
-        for val in item_dict["data"]["allTalks"]:
-            
-            #Validate placeholder is true
-            if val["isPlaceholder"] == True:
-
-                #Validate speaker null
-                if not (val["speaker"] is not None):
-                    val["speaker"] = {u'name': u'No se especifica'}
-                
-                #Validate category null
-                if (val["category"] == ""):
-                    val["category"] = 'No se especifica'
-                #Validate room A_ to A
-                if val["room"] == "A_":
-                    val["room"] = "A"
-
-                now = datetime.datetime.now()
-                dateNow = now.strftime("%Y-%m-%d")
-                hourNow = now.strftime("%H:%M:%S")
-                now_plus_10 = now + datetime.timedelta(minutes = int(minutesInterval)) #sum 10 minutes
-                
-                if dateNow in val["timeSlot"]["date"]: #if date now 
-                    if hourNow in val["timeSlot"]["start"]:
-                        bot.send_message(nameBot, 
-                        text="*La Charla actual es : *"+ val["name"] + "\n"
-                        "*Category: *"+ val["category"] + "\n"
-                        "*Speakers: *"+ val["speaker"]["name"] + "\n"
-                        "*Fecha: *"+ val["timeSlot"]["date"] + "\n"
-                        "*Hora fin: *"+ val["timeSlot"]["end"] + "\n"
-                        "*Sala: *"+ val["room"]+ "\n",
-                        parse_mode="MARKDOWN")
-                    elif now_plus_10.strftime("%H:%M:%S") in val["timeSlot"]["start"]: #if exist hours + 10 min is true conference
-                        bot.send_message(nameBot, 
-                        text="*La proxima charla es: *"+ val["name"] + "\n"
-                        "*Category: *"+ val["category"] + "\n"
-                        "*Speakers: *"+ val["speaker"]["name"] + "\n"
-                        "*Fecha: *"+ val["timeSlot"]["date"] + "\n"
-                        "*Hora: *"+ val["timeSlot"]["start"] + "* hasta *" + val["timeSlot"]["end"] + "\n"
-                        "*Sala: *"+ val["room"]+ "\n",
-                        parse_mode="MARKDOWN")
-        time.sleep(2)                    
 
 if __name__ == '__main__':
-    
+
     main()
-    
