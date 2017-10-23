@@ -26,6 +26,8 @@ import datetime
 import threading
 import time
 import sys
+import ast
+import collections
 
 #Variable env
 #name Bot
@@ -74,6 +76,16 @@ def query():
 	''')
     return result.encode("utf-8")
 
+def convert(data):
+    if isinstance(data, basestring):
+        return str(data)
+    elif isinstance(data, collections.Mapping):
+        return dict(map(convert, data.iteritems()))
+    elif isinstance(data, collections.Iterable):
+        return type(data)(map(convert, data))
+    else:
+        return data
+
 def start(bot, update):
     print "entro"
     q_conference = query()
@@ -100,11 +112,15 @@ def start(bot, update):
                 dateNow = now.strftime("%Y-%m-%d")
                 hourNow = now.strftime("%H:%M:%S")
                 now_plus_10 = now + datetime.timedelta(minutes = int(minutesInterval)) #sum 10 minutes
-                print now_plus_10
 
-                if dateNow in val["timeSlot"]["date"]: #if date now
-                    if now_plus_10.strftime("%H:%M:%S") in val["timeSlot"]["start"]:
-                        bot.send_message(update.message.nameBot,
+                print now_plus_10.strftime("%H:%M:%S")
+
+                #print dateNow
+
+                if now_plus_10.strftime("%H:%M:%S") in val["timeSlot"].values():
+                    convertData = convert(val) #remove unicode dict
+                    if dateNow in convertData["timeSlot"].values():
+                        bot.send_message(nameBot,
                         text="*La proxima charla es: *"+ val["name"] + "\n"
                         "*Category: *"+ val["category"] + "\n"
                         "*Speakers: *"+ val["speaker"]["name"] + "\n"
@@ -113,20 +129,9 @@ def start(bot, update):
                         "*Sala: *"+ val["room"]+ "\n",
                         parse_mode="MARKDOWN")
 
-                if hourNow in val["timeSlot"]["start"]: #if exist hours + 10 min is true conference
-                    print "enviado"
-                    bot.send_message(update.message.nameBot,
-                    text="*La Charla actual es : *"+ val["name"] + "\n"
-                    "*Category: *"+ val["category"] + "\n"
-                    "*Speakers: *"+ val["speaker"]["name"] + "\n"
-                    "*Fecha: *"+ val["timeSlot"]["date"] + "\n"
-                    "*Hora fin: *"+ val["timeSlot"]["end"] + "\n"
-                    "*Sala: *"+ val["room"]+ "\n",
-                    parse_mode="MARKDOWN")
-        time.sleep(2)
+                        print "enviado mensaje next Speaker"
 
-
-
+        time.sleep(1)
 
 def main():
     updater = Updater(tokenTelegram)
