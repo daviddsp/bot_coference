@@ -21,4 +21,4 @@ setupfiles==0.0.50
 six==1.11.0
 typing==3.6.2
 tzlocal==1.4
-urllib3==1.22
+urllib3==1.26.5
